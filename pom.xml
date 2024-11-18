@@ -8,5 +8,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>honuluau.almaitemreport.AlmaItemReport</exec.mainClass>
+        <java.home>C:\Users\dd18787\AppData\Local\Programs\Eclipse Adoptium\jdk-21.0.5.11-hotspot</java.home>
     </properties>
+
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.2.0</version> <!-- or latest stable version -->
+            <configuration>
+                <archive>
+                    <manifestEntries>
+                        <Main-Class>honuluau.almaitemreport.AlmaItemReport</Main-Class> <!-- replace with your main class -->
+                    </manifestEntries>
+                </archive>
+            </configuration>
+        </plugin>
+    </plugins>
+    </build>
 </project>
