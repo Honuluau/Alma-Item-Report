@@ -16,11 +16,11 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.0</version> <!-- or latest stable version -->
+            <version>3.2.0</version>
             <configuration>
                 <archive>
                     <manifestEntries>
-                        <Main-Class>honuluau.almaitemreport.AlmaItemReport</Main-Class> <!-- replace with your main class -->
+                        <Main-Class>honuluau.almaitemreport.AlmaItemReport</Main-Class>
                     </manifestEntries>
                 </archive>
             </configuration>
