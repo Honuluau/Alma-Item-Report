@@ -1,4 +1,11 @@
 {
     "java.configuration.updateBuildConfiguration": "disabled",
-    "java.jdt.ls.java.home": "C:\\Users\\dd18787\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-21.0.5.11-hotspot"
+    "java.jdt.ls.java.home":"C:\\Users\\dd18787\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-21.0.5.11-hotspot",
+    "java.configuration.runtimes": [
+        {
+            "name":"JavaSE-21",
+            "path":"C:\\Users\\dd18787\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-21.0.5.11-hotspot",
+            "default":true
+        }
+    ]
 }

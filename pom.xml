@@ -9,6 +9,8 @@
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>honuluau.almaitemreport.AlmaItemReport</exec.mainClass>
         <java.home>C:\Users\dd18787\AppData\Local\Programs\Eclipse Adoptium\jdk-21.0.5.11-hotspot</java.home>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
