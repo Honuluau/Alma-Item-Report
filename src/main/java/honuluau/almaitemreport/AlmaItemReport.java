@@ -16,14 +16,37 @@ public class AlmaItemReport {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
-        System.out.println("Alma Item Report Running! \n----------\nPlease enter .xlsx file path:\n");
+
+    public static String getFilePathFromUser() {
+        System.out.println("Please enter a .xlsx file path:\n");
 
         Scanner scanner = new Scanner(System.in);
         String filePath = scanner.nextLine();
         filePath = filePath.replaceAll("\"", "");
-        scanner.close();
 
-        System.out.println("You're file path=" + filePath);
+        String fileExtenstion = filePath.substring(filePath.lastIndexOf("."));
+        System.out.println(fileExtenstion);
+
+        // Check if file path exists.
+        try {
+            File file = new File(filePath);
+            
+            if (file.exists()) {
+                System.out.println("File found.");
+                return filePath;
+            } else {
+                System.out.println("File not found.");
+                return getFilePathFromUser();
+            }
+        } catch(Exception e) {
+            System.out.println("File not found.");
+            return getFilePathFromUser();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Alma Item Report Running! \n----------------------------------------\n");
+
+        String filePath = getFilePathFromUser();
     }
 }
