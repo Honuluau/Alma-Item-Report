@@ -14,7 +14,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class AlmaItemReport {
 
     private static final Logger log = LogManager.getFormatterLogger(AlmaItemReport.class);
+    private static Scanner scanner = new Scanner(System.in);
 
+    // Reads XLSX File.
     public static void readXLSX(File file) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
@@ -27,23 +29,24 @@ public class AlmaItemReport {
             workbook.close();
             
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
+    // Gets the .extension from filePath
     public static String getFileExtension(String filePath) {
         try{
-            String fileExtenssion = filePath.substring(filePath.lastIndexOf("."));
-            return fileExtenssion;
+            String fileExtension = filePath.substring(filePath.lastIndexOf("."));
+            return fileExtension;
         } catch(Exception e) {
             return "";
         }
     }
 
+    // Takes file path from input by scanning.
     public static String getFilePathFromUser() {
         System.out.println("Please enter a .xlsx file path:\n");
 
-        Scanner scanner = new Scanner(System.in);
         String filePath = scanner.nextLine();
         filePath = filePath.replaceAll("\"", "");
         
@@ -53,15 +56,13 @@ public class AlmaItemReport {
             System.out.println("File not found or either not an .xlsx file.");
             return getFilePathFromUser();
         }
+        
         // Check if file path exists.
-
-
         try {
             File file = new File(filePath);
             
             if (file.exists()) {
                 System.out.println("File found.");
-                readXLSX(new File(filePath));
                 return filePath;
             } else {
                 System.out.println("File not found.");
@@ -77,5 +78,8 @@ public class AlmaItemReport {
         System.out.println("Alma Item Report Running! \n----------------------------------------\n");
 
         String filePath = getFilePathFromUser();
+        readXLSX(new File(filePath));
+
+        scanner.close();
     }
 }
