@@ -39,7 +39,7 @@ public class AlmaItemReport {
                 rows.add(headerRow);
             }
 
-            log.info(sheet.getPhysicalNumberOfRows() + " item(s) have been found.");
+            log.info(sheet.getPhysicalNumberOfRows()-1 + " item(s) have been found.");
             workbook.close();
         } catch (Exception e) {
             log.error(e);
@@ -128,11 +128,17 @@ public class AlmaItemReport {
         readXLSX(new File(filePath));
 
         System.out.println("\n--------------------------------------------------------------------------------");
-        System.out.println("Available Columns/Keys:");
+        System.out.println("Available Columns/Keys:\n");
 
         printInCollumns(columnNames);
 
-        System.out.println("\n--------------------------------------------------------------------------------");
+        System.out.println("\nCommand template: PULL \"columnA\",\"columnB\" WHERE \"columnC\"=\"value1\",\"value2\""); 
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Please enter a pull command:");
+
+        String pullCommand = scanner.nextLine();
+
+        System.out.println("PullCommand=" + pullCommand);
         scanner.close();
     }
 }
