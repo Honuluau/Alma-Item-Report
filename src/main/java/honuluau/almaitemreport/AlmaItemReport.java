@@ -4,13 +4,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Scanner;
 
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class AlmaItemReport {
 
+    private static final Logger log = LogManager.getFormatterLogger(AlmaItemReport.class);
+
     public static void readXLSX(File file) {
         try {
-            POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            XSSFRow headerRow = sheet.getRow(0);
+
+            for (Cell cell : headerRow) {
+                log.info(cell.toString());
+            }
+            workbook.close();
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -20,7 +34,6 @@ public class AlmaItemReport {
     public static String getFileExtension(String filePath) {
         try{
             String fileExtenssion = filePath.substring(filePath.lastIndexOf("."));
-            System.out.println(fileExtenssion);
             return fileExtenssion;
         } catch(Exception e) {
             return "";
@@ -34,13 +47,21 @@ public class AlmaItemReport {
         String filePath = scanner.nextLine();
         filePath = filePath.replaceAll("\"", "");
         
-        String fileExtension = getFileExsention(filePath);
+        // Check if its an .xlsx file
+        String fileExtension = getFileExtension(filePath);
+        if (!fileExtension.equals(".xlsx")) {
+            System.out.println("File not found or either not an .xlsx file.");
+            return getFilePathFromUser();
+        }
         // Check if file path exists.
+
+
         try {
             File file = new File(filePath);
             
             if (file.exists()) {
                 System.out.println("File found.");
+                readXLSX(new File(filePath));
                 return filePath;
             } else {
                 System.out.println("File not found.");
