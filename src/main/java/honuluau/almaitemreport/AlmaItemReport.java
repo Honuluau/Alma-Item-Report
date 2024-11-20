@@ -17,16 +17,24 @@ public class AlmaItemReport {
         }
     }
 
+    public static String getFileExtension(String filePath) {
+        try{
+            String fileExtenssion = filePath.substring(filePath.lastIndexOf("."));
+            System.out.println(fileExtenssion);
+            return fileExtenssion;
+        } catch(Exception e) {
+            return "";
+        }
+    }
+
     public static String getFilePathFromUser() {
         System.out.println("Please enter a .xlsx file path:\n");
 
         Scanner scanner = new Scanner(System.in);
         String filePath = scanner.nextLine();
         filePath = filePath.replaceAll("\"", "");
-
-        String fileExtenstion = filePath.substring(filePath.lastIndexOf("."));
-        System.out.println(fileExtenstion);
-
+        
+        String fileExtension = getFileExsention(filePath);
         // Check if file path exists.
         try {
             File file = new File(filePath);
