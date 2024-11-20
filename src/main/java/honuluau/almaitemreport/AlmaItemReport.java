@@ -128,16 +128,38 @@ public class AlmaItemReport {
         interpretPullCommand(pullCommand);
     }
 
+    // Turns underscores into spaces and removes quotation marks from input.
+    public static String formatString(String s) {
+        String formattedString = s;
+
+        formattedString.replaceAll("_", " ");
+        formattedString.replaceAll("\"", "");
+
+        return formattedString;
+    }
+
     public static void interpretPullCommand(String command) {
         String[] splitCommands = command.split(" ");
         System.out.println("---------------------");
-        for (String x : splitCommands) {
-            System.out.println(x);
-        }
 
         if (!splitCommands[0].equals("PULL") || !splitCommands[2].equals("WHERE")) {
             log.error("PULL and WHERE not indexed properly, make sure they are in the right place.");
             promptCommand();
+        }
+
+        try {
+            String[] pullColumnNames = splitCommands[1].split(",");
+            String whereColumnNames = splitCommands[3];
+
+            String[] whereCommands = whereColumnNames.split("=");
+            String columnComparator = whereCommands[0];
+            String[] columnEquals = whereCommands[1].split(",");
+
+            for (String pullColumnName : pullColumnNames) {
+                log.info("Pulling " + pullColumnName);
+            }
+        } catch(Exception e) {
+            log.error("Invaldi command input.");
         }
     }
 
