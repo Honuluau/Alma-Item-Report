@@ -18,7 +18,8 @@ public class AlmaItemReport {
     private static final Logger log = LogManager.getFormatterLogger(AlmaItemReport.class);
     private static Scanner scanner = new Scanner(System.in);
 
-    private static List<String> collumnNames = new ArrayList<String>();
+    private static List<String> columnNames = new ArrayList<String>();
+    private static List<XSSFRow> rows = new ArrayList<XSSFRow>();
 
     // Reads XLSX File.
     public static void readXLSX(File file) {
@@ -27,16 +28,19 @@ public class AlmaItemReport {
             XSSFSheet sheet = workbook.getSheetAt(0);
             XSSFRow headerRow = sheet.getRow(0);
 
-            // Add CollumnNames
+            // Add ColumnNames
             for (Cell cell : headerRow) {
-                collumnNames.add(cell.toString());
+                columnNames.add(cell.toString());
                 log.info(cell.toString());
             }
 
+            // Add rows, except for the header row of course.
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+                rows.add(headerRow);
+            }
 
             log.info(sheet.getPhysicalNumberOfRows() + " item(s) have been found.");
             workbook.close();
-            
         } catch (Exception e) {
             log.error(e);
         }
@@ -62,7 +66,7 @@ public class AlmaItemReport {
         // Check if its an .xlsx file
         String fileExtension = getFileExtension(filePath);
         if (!fileExtension.equals(".xlsx")) {
-            System.out.println("File not found or either not an .xlsx file.");
+            System.out.println("File not found or not a .xlsx file.");
             return getFilePathFromUser();
         }
 
@@ -83,12 +87,52 @@ public class AlmaItemReport {
         }
     }
 
+    public static void printInCollumns(List<String> stringList) {
+        // Print stringList into 5 columns.
+        int printColumns = 5;
+
+        List<List<String>> printRows = new ArrayList<>();
+
+        // For loop runs based on multiples of 5.
+        for (int i = 0; i < stringList.size(); i += printColumns) {
+            // Add row to printRows
+            List<String> printRow = new ArrayList<>();
+            for (int r = 0; r < printColumns && i + r < stringList.size(); r++) {
+                printRow.add(stringList.get(i + r));
+            }
+            printRows.add(printRow);
+        }
+
+        int largestWidth = 0;
+        int widthMargin = 4;
+        for (String name : stringList) {
+            if (name.length() > largestWidth) {
+                largestWidth = name.length();
+            }
+        }        
+
+        // Print Rows
+        for (List<String> printRow : printRows) {
+            for (String print : printRow) {
+                System.out.printf("%-"+(largestWidth+widthMargin)+"s", print);
+            }
+            System.out.println();
+        }
+    }
+
     public static void main(String[] args) {
+        // Run Alma Item Report
         System.out.println("Alma Item Report Running! \n----------------------------------------\n");
 
         String filePath = getFilePathFromUser();
         readXLSX(new File(filePath));
 
+        System.out.println("\n--------------------------------------------------------------------------------");
+        System.out.println("Available Columns/Keys:");
+
+        printInCollumns(columnNames);
+
+        System.out.println("\n--------------------------------------------------------------------------------");
         scanner.close();
     }
 }
