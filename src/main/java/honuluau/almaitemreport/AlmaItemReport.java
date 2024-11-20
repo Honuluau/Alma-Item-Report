@@ -21,11 +21,13 @@ public class AlmaItemReport {
     private static List<String> columnNames = new ArrayList<String>();
     private static List<XSSFRow> rows = new ArrayList<XSSFRow>();
 
+    private static XSSFSheet sheet;
+
     // Reads XLSX File.
     public static void readXLSX(File file) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            sheet = workbook.getSheetAt(0);
             XSSFRow headerRow = sheet.getRow(0);
 
             // Add ColumnNames
@@ -36,7 +38,7 @@ public class AlmaItemReport {
 
             // Add rows, except for the header row of course.
             for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-                rows.add(headerRow);
+                rows.add(sheet.getRow(i));
             }
 
             log.info(sheet.getPhysicalNumberOfRows()-1 + " item(s) have been found.");
@@ -132,8 +134,8 @@ public class AlmaItemReport {
     public static String formatString(String s) {
         String formattedString = s;
 
-        formattedString.replaceAll("_", " ");
-        formattedString.replaceAll("\"", "");
+        formattedString = formattedString.replaceAll("_", " ");
+        formattedString = formattedString.replaceAll("\"", "");
 
         return formattedString;
     }
@@ -156,10 +158,21 @@ public class AlmaItemReport {
             String[] columnEquals = whereCommands[1].split(",");
 
             for (String pullColumnName : pullColumnNames) {
-                log.info("Pulling " + pullColumnName);
+                String formattedColumnName = formatString(pullColumnName);
+                log.info("Pulling " + formattedColumnName);
+
+                for (String columnValue : columnEquals) {
+                    String formattedValue = formatString(columnValue);
+                    log.info("With " + formattedValue);
+
+                    for (XSSFRow row : rows) {
+                        log.info("Parsing row " + row.getRowNum());
+                    }
+                }
             }
         } catch(Exception e) {
-            log.error("Invaldi command input.");
+            log.error(e);
+            log.error("Invalid command input.");
         }
     }
 
