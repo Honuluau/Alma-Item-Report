@@ -2,6 +2,8 @@ package honuluau.almaitemreport;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +18,8 @@ public class AlmaItemReport {
     private static final Logger log = LogManager.getFormatterLogger(AlmaItemReport.class);
     private static Scanner scanner = new Scanner(System.in);
 
+    private static List<String> collumnNames = new ArrayList<String>();
+
     // Reads XLSX File.
     public static void readXLSX(File file) {
         try {
@@ -23,9 +27,14 @@ public class AlmaItemReport {
             XSSFSheet sheet = workbook.getSheetAt(0);
             XSSFRow headerRow = sheet.getRow(0);
 
+            // Add CollumnNames
             for (Cell cell : headerRow) {
+                collumnNames.add(cell.toString());
                 log.info(cell.toString());
             }
+
+
+            log.info(sheet.getPhysicalNumberOfRows() + " item(s) have been found.");
             workbook.close();
             
         } catch (Exception e) {
@@ -56,7 +65,7 @@ public class AlmaItemReport {
             System.out.println("File not found or either not an .xlsx file.");
             return getFilePathFromUser();
         }
-        
+
         // Check if file path exists.
         try {
             File file = new File(filePath);
