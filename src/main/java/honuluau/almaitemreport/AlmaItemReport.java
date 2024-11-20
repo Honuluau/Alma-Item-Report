@@ -120,6 +120,27 @@ public class AlmaItemReport {
         }
     }
 
+    public static void promptCommand() {
+        System.out.println("Please enter a pull command:");
+        System.out.print("> ");
+
+        String pullCommand = scanner.nextLine();
+        interpretPullCommand(pullCommand);
+    }
+
+    public static void interpretPullCommand(String command) {
+        String[] splitCommands = command.split(" ");
+        System.out.println("---------------------");
+        for (String x : splitCommands) {
+            System.out.println(x);
+        }
+
+        if (!splitCommands[0].equals("PULL") || !splitCommands[2].equals("WHERE")) {
+            log.error("PULL and WHERE not indexed properly, make sure they are in the right place.");
+            promptCommand();
+        }
+    }
+
     public static void main(String[] args) {
         // Run Alma Item Report
         System.out.println("Alma Item Report Running! \n----------------------------------------\n");
@@ -132,13 +153,10 @@ public class AlmaItemReport {
 
         printInCollumns(columnNames);
 
-        System.out.println("\nCommand template: PULL \"columnA\",\"columnB\" WHERE \"columnC\"=\"value1\",\"value2\""); 
+        System.out.println("\nCommand template: PULL \"columnA\",\"columnB\" WHERE \"columnC\"=\"value1\",\"value2\" \n*** Please use underscores instead of spaces in variables."); 
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Please enter a pull command:");
+        promptCommand();
 
-        String pullCommand = scanner.nextLine();
-
-        System.out.println("PullCommand=" + pullCommand);
         scanner.close();
     }
 }
